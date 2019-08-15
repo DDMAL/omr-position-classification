@@ -28,7 +28,7 @@ class PositionClassification(RodanTask):
     )
 
     output_port_types = (
-        {"name": "Updated GameraXML File", "minimum": 1, "maximum": 1, "resource_types"}
+        {"name": "Generic XML File", "minimum": 1, "maximum": 1, "resource_types": ["application/xml"]}
     )
 
     def run_my_task(self, inputs, settings, outputs):
