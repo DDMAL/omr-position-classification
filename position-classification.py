@@ -38,7 +38,7 @@ class PositionClassification(RodanTask):
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
         input_img_path = inputs['Image'][0]['resource_path']
 
-        image = cv.imread(input_img_path, True)
+        # image = cv.imread(input_img_path, True)
 
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
         output_xml = open(output_xml_path, 'w')
