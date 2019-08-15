@@ -13,3 +13,6 @@
 - mimetype: application/gamera+xml
   description: Gamera XML file
   extension: xml
+- mimetype: application/xml
+  description: Generic XML file
+  extension: xml
