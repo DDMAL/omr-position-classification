@@ -25,11 +25,11 @@ class PositionClassification(RodanTask):
     input_port_types = (
         {'name': 'Image', 'minimum': 1, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
         {'name': 'GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/gamera+xml']},
-        {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+hdf5']}
+        {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
     )
 
     output_port_types = (
-        {'name': 'Generic XML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/xml']}
+        {'name': 'Generic XML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/xml']},
     )
 
     def run_my_task(self, inputs, settings, outputs):
