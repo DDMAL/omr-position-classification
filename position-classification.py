@@ -7,6 +7,7 @@ import numpy as np
 import cv2 as cv
 import xml.etree.ElementTree as ET
 import statistics
+import fileinput
 
 from rodan.jobs.base import RodanTask
 
@@ -39,4 +40,9 @@ class PositionClassification(RodanTask):
 
         image = cv.imread(img_path, True)
 
-        return 0
+        output_xml_path = outputs['Generic XML File'][0]['resource_path']
+        output_xml = open(output_xml_path, 'w')
+        output_xml.write("Yeet")
+        output_xml.close()
+
+        return True
