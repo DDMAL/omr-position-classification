@@ -40,9 +40,18 @@ class PositionClassification(RodanTask):
 
         # image = cv.imread(input_img_path, True)
 
-        output_xml_path = outputs['Generic XML File'][0]['resource_path']
-        output_xml = open(output_xml_path, 'w')
-        output_xml.write('Yeet')
-        output_xml.close()
+        root = ET.Element("root")
+        doc = ET.SubElement(root, "doc")
+
+        ET.SubElement(doc, "field1", name="blah").text = "some value1"
+        ET.SubElement(doc, "field2", name="asdfasd").text = "some value2"
+
+        tree = ET.ElementTree(root)
+        tree.write(outputs['Generic XML File'][0]['resource_path'] + ".xml")
+
+        # output_xml_path = outputs['Generic XML File'][0]['resource_path']
+        # output_xml = open(output_xml_path, 'w')
+        # output_xml.write('Yeet')
+        # output_xml.close()
 
         return True
