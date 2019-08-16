@@ -47,7 +47,7 @@ class PositionClassification(RodanTask):
         ET.SubElement(doc, "field2", name="asdfasd").text = "some value2"
 
         tree = ET.ElementTree(root)
-        tree.write(outputs['Generic XML File'][0]['resource_path'] + ".xml")
+        tree.write(outputs['Generic XML File'][0]['resource_path'])
 
         # output_xml_path = outputs['Generic XML File'][0]['resource_path']
         # output_xml = open(output_xml_path, 'w')
