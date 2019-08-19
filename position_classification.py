@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import fileinput
 
 from rodan.jobs.base import RodanTask
-from model_processing import process_neumes
+import model_processing as processing
 
 
 class PositionClassification(RodanTask):
@@ -24,9 +24,9 @@ class PositionClassification(RodanTask):
     settings = {}
 
     input_port_types = (
-        {'name': 'Original Image', 'minimum': 0, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
+        {'name': 'Original Image', 'minimum': 1, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
         {'name': 'GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/gamera+xml']},
-        {'name': 'Position Model', 'minimum': 0, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
+        {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
         # {'name': 'Staff Image', 'minimum': 0, 'maximum': 1, 'resource_types': ['image/rgb+png']}
     )
 
@@ -62,7 +62,7 @@ class PositionClassification(RodanTask):
 
         avg_glyph_height = int(glyph_height_sum/glyph_count)
 
-        labels = process_neumes(image, glyph_coords, avg_glyph_height, input_position_model_path)
+        labels = processing.process_neumes(image, glyph_coords, avg_glyph_height, input_position_model_path)
         print(labels)
         with open(input_xml_path, 'r') as in_file:
             buf = in_file.readlines()
