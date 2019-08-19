@@ -36,11 +36,11 @@ class PositionClassification(RodanTask):
 
     def run_my_task(self, inputs, settings, outputs):
 
-        # input_position_model_path = inputs['Position Model'][0]['resource_path']
+        input_position_model_path = inputs['Position Model'][0]['resource_path']
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
-        # input_img_path = inputs['Image'][0]['resource_path']
+        input_img_path = inputs['Image'][0]['resource_path']
 
-        # image = cv.imread(input_img_path, True)
+        image = cv.imread(input_img_path, True)
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
         glyph_count = 0
