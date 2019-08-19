@@ -67,16 +67,19 @@ class PositionClassification(RodanTask):
         with open(input_xml_path, 'r') as in_file:
             buf = in_file.readlines()
 
+        inc = 0
+
         with open(output_xml_path, 'w') as out_file:
             for line in buf:
                 if "</ids>" in line:
                     line = line + \
                         '\t\t\t<type name=""/>\n' + \
                         '\t\t\t<pitch-estimation>\n' + \
-                        '\t\t\t\t<position name=""/>\n' + \
+                        f'\t\t\t\t<position name="{ labels[inc] }"/>\n' + \
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
                 out_file.write(line)
+                inc += 1
             out_file.write(labels)
 
         return True
