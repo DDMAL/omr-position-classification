@@ -62,8 +62,8 @@ class PositionClassification(RodanTask):
 
         avg_glyph_height = int(glyph_height_sum/glyph_count)
 
-        labels = process_neumes(image, glyph_coords, input_position_model_path)
-
+        labels = process_neumes(image, glyph_coords, avg_glyph_height, input_position_model_path)
+        print(labels)
         with open(input_xml_path, 'r') as in_file:
             buf = in_file.readlines()
 
