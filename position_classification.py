@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import fileinput
 
 from rodan.jobs.base import RodanTask
-import model_processing as processing
+from . import model_processing as processing
 
 
 class PositionClassification(RodanTask):
