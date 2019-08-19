@@ -41,6 +41,7 @@ class PositionClassification(RodanTask):
         input_img_path = inputs['Image'][0]['resource_path']
 
         image = cv.imread(input_img_path, True)
+
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
         glyph_count = 0
@@ -61,6 +62,8 @@ class PositionClassification(RodanTask):
 
         avg_glyph_height = int(glyph_height_sum/glyph_count)
 
+        labels = process_neumes(image, glyph_coords, input_position_model_path)
+
         with open(input_xml_path, 'r') as in_file:
             buf = in_file.readlines()
 
@@ -74,10 +77,6 @@ class PositionClassification(RodanTask):
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
                 out_file.write(line)
-
-        # output_xml_path = outputs['Generic XML File'][0]['resource_path']
-        # output_xml = open(output_xml_path, 'w')
-        # output_xml.write('Yeet')
-        # output_xml.close()
+            out_file.write(labels)
 
         return True
