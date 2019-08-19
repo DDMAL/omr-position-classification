@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import fileinput
 
 from rodan.jobs.base import RodanTask
+from model_processing import process_neumes
 
 
 class PositionClassification(RodanTask):
@@ -23,9 +24,10 @@ class PositionClassification(RodanTask):
     settings = {}
 
     input_port_types = (
-        {'name': 'Image', 'minimum': 0, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
+        {'name': 'Original Image', 'minimum': 0, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
         {'name': 'GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/gamera+xml']},
         {'name': 'Position Model', 'minimum': 0, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
+        # {'name': 'Staff Image', 'minimum': 0, 'maximum': 1, 'resource_types': ['image/rgb+png']}
     )
 
     output_port_types = (
@@ -39,15 +41,39 @@ class PositionClassification(RodanTask):
         # input_img_path = inputs['Image'][0]['resource_path']
 
         # image = cv.imread(input_img_path, True)
+        output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
-        root = ET.Element("root")
-        doc = ET.SubElement(root, "doc")
+        glyph_count = 0
+        glyph_height_sum = 0
+        glyph_coords = []
 
-        ET.SubElement(doc, "field1", name="blah").text = "some value1"
-        ET.SubElement(doc, "field2", name="asdfasd").text = "some value2"
+        tree = ET.parse(input_xml_path)
+        root = tree.getroot()
 
-        tree = ET.ElementTree(root)
-        tree.write(outputs['Generic XML File'][0]['resource_path'])
+        for glyph in root.find('glyphs'):
+            uly = int(glyph.get('uly'))
+            ulx = int(glyph.get('ulx'))
+            nrows = int(glyph.get('nrows'))
+            ncols = int(glyph.get('ncols'))
+            glyph_count += 1
+            glyph_height_sum += nrows
+            glyph_coords.append([uly, ulx, nrows, ncols])
+
+        avg_glyph_height = int(glyph_height_sum/glyph_count)
+
+        with open(input_xml_path, 'r') as in_file:
+            buf = in_file.readlines()
+
+        with open(output_xml_path, 'w') as out_file:
+            for line in buf:
+                if "</ids>" in line:
+                    line = line + \
+                        '\t\t\t<type name=""/>\n' + \
+                        '\t\t\t<pitch-estimation>\n' + \
+                        '\t\t\t\t<position name=""/>\n' + \
+                        '\t\t\t\t<pitch name=""/>\n' + \
+                        '\t\t\t</pitch-estimation>\n'
+                out_file.write(line)
 
         # output_xml_path = outputs['Generic XML File'][0]['resource_path']
         # output_xml = open(output_xml_path, 'w')
