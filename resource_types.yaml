@@ -7,6 +7,9 @@
 - mimetype: image/rgba+png
   description: PNG image file with alpha channel
   extension: png
+- mimetype: keras/model+h5
+  description: Trained network from Keras framework
+  extension: h5
 - mimetype: keras/model+hdf5
   description: Trained network from Keras framework
   extension: hdf5
