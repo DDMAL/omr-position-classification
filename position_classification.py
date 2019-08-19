@@ -75,7 +75,7 @@ class PositionClassification(RodanTask):
                     line = line + \
                         '\t\t\t<type name=""/>\n' + \
                         '\t\t\t<pitch-estimation>\n' + \
-                        f'\t\t\t\t<position name="{ labels[inc] }"/>\n' + \
+                        f'\t\t\t\t<position name="' + str(labels[inc]) +'"/>\n' + \
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
                 out_file.write(line)
