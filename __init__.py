@@ -6,4 +6,4 @@ logger = logging.getLogger('rodan')
 
 from rodan.jobs import module_loader
 
-module_loader('rodan.jobs.omr-position-classification.position-classification')
+module_loader('rodan.jobs.omr-position-classification.position_classification')
