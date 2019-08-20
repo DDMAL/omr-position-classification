@@ -48,6 +48,8 @@ class PositionClassification(RodanTask):
         glyph_height_sum = 0
         glyph_coords = []
 
+        labels = ['l1', 'l2', 'l3', 'l4', 's1', 's2', 's3', 's4', 's5']
+
         tree = ET.parse(input_xml_path)
         root = tree.getroot()
 
@@ -62,8 +64,8 @@ class PositionClassification(RodanTask):
 
         avg_glyph_height = int(glyph_height_sum/glyph_count)
 
-        labels = processing.process_neumes(image, glyph_coords, avg_glyph_height, input_position_model_path)
-        print(labels)
+        predictions = processing.process_neumes(image, glyph_coords, avg_glyph_height, input_position_model_path)
+        # print(labels)
         with open(input_xml_path, 'r') as in_file:
             buf = in_file.readlines()
 
@@ -75,7 +77,7 @@ class PositionClassification(RodanTask):
                     line = line + \
                         '\t\t\t<type name=""/>\n' + \
                         '\t\t\t<pitch-estimation>\n' + \
-                        '\t\t\t\t<position name="' + str(labels[inc]) +'"/>\n' + \
+                        '\t\t\t\t<position name="' + str(labels(np.argmax(predictions[inc]))) +'"/>\n' + \
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
                     inc += 1
