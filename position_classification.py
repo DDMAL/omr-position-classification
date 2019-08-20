@@ -21,7 +21,9 @@ class PositionClassification(RodanTask):
     category = 'OMR'
     interactive = False
 
-    settings = {}
+    settings = {
+        'job_queue': 'Python3'
+    }
 
     input_port_types = (
         {'name': 'Original Image', 'minimum': 1, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
