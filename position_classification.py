@@ -78,8 +78,9 @@ class PositionClassification(RodanTask):
                         '\t\t\t\t<position name="' + str(labels[inc]) +'"/>\n' + \
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
+                    inc += 1
                 out_file.write(line)
-                inc += 1
+
             out_file.write(labels)
 
         return True
