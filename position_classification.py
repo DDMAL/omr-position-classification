@@ -79,7 +79,7 @@ class PositionClassification(RodanTask):
             for line in buf:
                 if "</ids>" in line:
                     position = str(labels[np.argmax(predictions[inc])])
-                    confidence = str(max(predictions[inc]) * 100)
+                    confidence = str(round(max(predictions[inc]) * 100, 2))
                     line = line + \
                         '\t\t\t<type name=""/>\n' + \
                         '\t\t\t<pitch-estimation>\n' + \
