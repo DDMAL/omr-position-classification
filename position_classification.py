@@ -83,6 +83,6 @@ class PositionClassification(RodanTask):
                     inc += 1
                 out_file.write(line)
 
-            out_file.write(labels)
+            # out_file.write(labels)
 
         return True
