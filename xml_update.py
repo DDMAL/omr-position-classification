@@ -25,6 +25,9 @@ def get_glyph_coords(xml_path):
 
 def write_output_xml(input_xml_path, output_xml_path, predictions):
 
+    labels = ['l1', 'l2', 'l3', 'l4', 's1', 's2', 's3', 's4', 's5']
+
+
     with open(input_xml_path, 'r') as in_file:
         buf = in_file.readlines()
 

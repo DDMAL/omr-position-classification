@@ -45,8 +45,6 @@ class PositionClassification(RodanTask):
 
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
-        labels = ['l1', 'l2', 'l3', 'l4', 's1', 's2', 's3', 's4', 's5']
-
         glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
         predictions = processing.process_neumes(
