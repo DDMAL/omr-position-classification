@@ -11,6 +11,7 @@ import fileinput
 
 from rodan.jobs.base import RodanTask
 from . import model_processing as processing
+from . import xml_update
 
 
 class PositionClassification(RodanTask):
