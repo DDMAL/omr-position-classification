@@ -77,7 +77,7 @@ class PositionClassification(RodanTask):
                     line = line + \
                         '\t\t\t<type name=""/>\n' + \
                         '\t\t\t<pitch-estimation>\n' + \
-                        '\t\t\t\t<position name="' + str(labels(np.argmax(predictions[inc]))) +'"/>\n' + \
+                        '\t\t\t\t<position name="' + str(labels[np.argmax(predictions[inc])]) +'"/>\n' + \
                         '\t\t\t\t<pitch name=""/>\n' + \
                         '\t\t\t</pitch-estimation>\n'
                     inc += 1
