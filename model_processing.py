@@ -26,10 +26,9 @@ def process_neumes(image, coords, avg_neume_height, model_path):
     bounding_boxes = [(bb / 1) for bb in bounding_boxes]
     bounding_boxes = np.asarray(bounding_boxes).reshape(len(bounding_boxes),120,30,3)
 
-    for bb in bounding_boxes:
-        prediction = model.predict(bb)
-        label = np.argmax(prediction)
-        labels.append(label)
+    predictions = model.predict(bb)
+    # labels = np.argmax(prediction)
+    # labels.append(label)
 
 
-    return labels
+    return predictions
