@@ -5,8 +5,6 @@
 
 import numpy as np
 import cv2 as cv
-import xml.etree.ElementTree as ET
-# import statistics
 import fileinput
 
 from rodan.jobs.base import RodanTask
@@ -47,25 +45,9 @@ class PositionClassification(RodanTask):
 
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
-        glyph_count = 0
-        glyph_height_sum = 0
-        glyph_coords = []
-
         labels = ['l1', 'l2', 'l3', 'l4', 's1', 's2', 's3', 's4', 's5']
 
-        tree = ET.parse(input_xml_path)
-        root = tree.getroot()
-
-        for glyph in root.find('glyphs'):
-            uly = int(glyph.get('uly'))
-            ulx = int(glyph.get('ulx'))
-            nrows = int(glyph.get('nrows'))
-            ncols = int(glyph.get('ncols'))
-            glyph_count += 1
-            glyph_height_sum += nrows
-            glyph_coords.append([uly, ulx, nrows, ncols])
-
-        avg_glyph_height = int(glyph_height_sum/glyph_count)
+        glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
         predictions = processing.process_neumes(
             image,
