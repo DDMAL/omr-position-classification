@@ -8,7 +8,7 @@ import cv2 as cv
 import fileinput
 
 from rodan.jobs.base import RodanTask
-from training_interface import *
+from . import training_interface
 
 class PositionTraining(RodanTask):
     name = 'Position Training'
@@ -38,7 +38,7 @@ class PositionTraining(RodanTask):
 
         data = {
             'title': 'Yeet',
-            'image': media_file_path_to_public_url(input_img_path)
+            'image': training_interface.media_file_path_to_public_url(input_img_path)
         }
 
         return ('position_training.html', data)
