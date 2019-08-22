@@ -37,7 +37,7 @@ class PositionTraining(RodanTask):
             'title': Yeet
         }
 
-        return 'interfaces/position_training.html', data
+        return ('position_training.html', data)
 
     def run_my_task(self, inputs, settings, outputs):
         if '@done' not in settings:
