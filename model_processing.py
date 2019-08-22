@@ -6,12 +6,10 @@ import h5py
 from keras.models import load_model
 from keras.backend import image_data_format
 
-def process_neumes(image, coords, avg_neume_height, model_path):
+def process_neumes(image, coords, avg_neume_height, position_model_path, type_model_path):
 
     labels = []
     bounding_boxes = []
-
-    model = load_model(model_path)
 
     [height, width, channels] = image.shape
 
@@ -26,6 +24,13 @@ def process_neumes(image, coords, avg_neume_height, model_path):
     bounding_boxes = [(bb / 1) for bb in bounding_boxes]
     bounding_boxes = np.asarray(bounding_boxes).reshape(len(bounding_boxes),120,30,3)
 
-    predictions = model.predict(bounding_boxes)
+    position_model = load_model(position_model_path)
+    pos_predictions = position_model.predict(bounding_boxes)
 
-    return predictions
+    type_predictions = []
+
+    if type_model_path != '':
+        type_model = load_model(type_model_path)
+        type_predictions = type_model.predict(bounding_boxes)
+
+    return pos_predictions, type_predictions
