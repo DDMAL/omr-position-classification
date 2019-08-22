@@ -34,7 +34,7 @@ class PositionTraining(RodanTask):
 
     def get_my_interface(self, inputs, settings):
 
-        input_image_path = inputs['Original Image'][0]['resource_path']
+        input_img_path = inputs['Original Image'][0]['resource_path']
 
         data = {
             'title': 'Yeet',
