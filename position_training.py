@@ -34,7 +34,7 @@ class PositionTraining(RodanTask):
     def get_my_interface(self, inputs, settings):
 
         data = {
-            'title': Yeet
+            'title': 'Yeet'
         }
 
         return ('position_training.html', data)
