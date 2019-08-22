@@ -52,7 +52,7 @@ class PositionClassification(RodanTask):
 
         glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
-        pos_predictions, type_predicitons = processing.process_neumes(
+        pos_predictions, type_predictions = processing.process_neumes(
             image,
             glyph_coords,
             avg_glyph_height,
