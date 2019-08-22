@@ -28,7 +28,7 @@ class PositionClassification(RodanTask):
         {'name': 'Original Image', 'minimum': 1, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
         {'name': 'GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/gamera+xml']},
         {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+h5']},
-        # {'name': 'Staff Image', 'minimum': 0, 'maximum': 1, 'resource_types': ['image/rgb+png']}
+        {'name': 'Type Model', 'minimum': 0, 'maximum': 1, 'resource_types': ['keras/model+h5']}
     )
 
     output_port_types = (
@@ -41,18 +41,24 @@ class PositionClassification(RodanTask):
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
         input_img_path = inputs['Original Image'][0]['resource_path']
 
+        input_type_model_path = ''
+
+        if 'Type Model' in inputs:
+            input_type_model_path = inputs['Type Model'][0]['resource_path']
+
         image = cv.imread(input_img_path, True)
 
         output_xml_path = outputs['Generic XML File'][0]['resource_path']
 
         glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
-        predictions = processing.process_neumes(
+        pos_predictions, type_predicitons = processing.process_neumes(
             image,
             glyph_coords,
             avg_glyph_height,
-            input_position_model_path)
+            input_position_model_path,
+            input_type_model_path)
 
-        xml_update.write_output_xml(input_xml_path, output_xml_path, predictions)
+        xml_update.write_output_xml(input_xml_path, output_xml_path, pos_predictions, type_predictions)
 
         return True
