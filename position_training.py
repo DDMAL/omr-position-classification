@@ -36,9 +36,12 @@ class PositionTraining(RodanTask):
 
         input_img_path = inputs['Original Image'][0]['resource_path']
 
+        labels = ['l1','l2','l3','l4','s1','s2','s3','s4','s5']
+
         data = {
             'title': 'Yeet',
-            'image': training_interface.media_file_path_to_public_url(input_img_path)
+            'image': training_interface.media_file_path_to_public_url(input_img_path),
+            'labels': labels,
         }
 
         return ('position_training.html', data)

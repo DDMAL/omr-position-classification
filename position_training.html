@@ -11,5 +11,10 @@
   <h1>{{ title }}</h1>
   <h2>{{ image }}</h2>
   <img src="{{ image }}"/>
+  <ul>
+    {% for label in labels %}
+    <li>{{ label }}</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
