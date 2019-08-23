@@ -10,7 +10,7 @@
 <body>
   <h1>{{ title }}</h1>
   <!-- <img src="{{ image }}"/> -->
-  <canvas id="viewport"></canvas>
+  <canvas id="view"></canvas>
   <ul>
     {% for label in labels %}
     <li>{{ label }}</li>
@@ -18,7 +18,7 @@
   </ul>
   <script>
     window.onload = function () {
-      var canvas = document.getElementById("myCanvas");
+      var canvas = document.getElementById("view");
       var context = canvas.getContext("2d");
       var img = new Image()
       img.onload = function () {
