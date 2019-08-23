@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width"/>
 </head>
 <body>
+  {% load index %}
+
   <h1>{{ title }}</h1>
   <!-- <img src="{{ image }}"/> -->
   <canvas id="view"></canvas>
@@ -20,11 +22,13 @@
     window.onload = function () {
       var canvas = document.getElementById("view");
       var context = canvas.getContext("2d");
-      var img = new Image()
+      var img = new Image();
       img.onload = function () {
-        context.drawImage(img, {{ glyph_coords.0.1 }}, {{ glyph_coords.0.0 }})
-      }
-      img.src = '{{ image }}'
+        context.drawImage(img,
+          {{ glyph_coords|index:0|index:1 }},
+          {{ glyph_coords|index:0|index:0 }});
+      };
+      img.src = '{{ image }}';
     };
   </script>
 </body>
