@@ -9,6 +9,7 @@ import fileinput
 
 from rodan.jobs.base import RodanTask
 from . import training_interface
+from . import xml_update
 
 class PositionTraining(RodanTask):
     name = 'Position Training'
@@ -35,6 +36,9 @@ class PositionTraining(RodanTask):
     def get_my_interface(self, inputs, settings):
 
         input_img_path = inputs['Original Image'][0]['resource_path']
+        input_xml_path = inputs['Gamera XML File'][0]['resource_path']
+
+        glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
         labels = ['l1','l2','l3','l4','s1','s2','s3','s4','s5']
 
@@ -42,6 +46,8 @@ class PositionTraining(RodanTask):
             'title': 'Yeet',
             'image': training_interface.media_file_path_to_public_url(input_img_path),
             'labels': labels,
+            'glyph_coords': glyph_coords,
+            'agh': avg_glyph_height,
         }
 
         return ('position_training.html', data)
