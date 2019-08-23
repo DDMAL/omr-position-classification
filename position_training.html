@@ -9,12 +9,23 @@
 </head>
 <body>
   <h1>{{ title }}</h1>
-  <h2>{{ image }}</h2>
-  <img src="{{ image }}"/>
+  <!-- <img src="{{ image }}"/> -->
+  <canvas id="viewport"></canvas>
   <ul>
     {% for label in labels %}
     <li>{{ label }}</li>
     {% endfor %}
   </ul>
+  <script>
+    window.onload = function () {
+      var canvas = document.getElementById("myCanvas");
+      var context = canvas.getContext("2d");
+      var img = new Image()
+      img.onload = function () {
+        context.drawImage(img, 0, 0)
+      }
+      img.src = '{{ image }}'
+    };
+  </script>
 </body>
 </html>
