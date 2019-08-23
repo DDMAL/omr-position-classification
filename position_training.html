@@ -21,11 +21,47 @@
           integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
           crossorigin="anonymous"></script>
   <script>
-    window.onload = function () {
+    $(document).ready(function () {
+      var buttons = document.getElementsByClassName('pos-button')
       var canvas = document.getElementById("view");
       var context = canvas.getContext("2d");
       var img = new Image();
+      var count = 0;
+      var glyph_coords = {{ glyph_coords | safe }};
+      var agh = {{ agh }};
+
+      window.onload = function () {
+        img.onload = function () {
+          show_glyph();
+          for (var i=0;i < buttons.length; i++) {
+            buttons[i].style.display = "inline-block";
+          }
+        };
+        img.src = '{{ image }}';
       };
+
+      $('button').click(
+        function () {
+          console.log(this.id.slice(2));
+          show_glyph();
+        });
+
+      function show_glyph() {
+        if (count < glyph_coords.length) {
+          context.drawImage(img,
+            glyph_coords[count][1],
+            glyph_coords[count][0] - 3 * agh,
+            glyph_coords[count][3],
+            glyph_coords[count][2] + 6 * agh,
+            135, 10, 30, 150
+          );
+          count = count + 1;
+        } else {
+          close();
+        }
+
+      };
+    });
   </script>
 </body>
 </html>
