@@ -26,7 +26,11 @@
       img.onload = function () {
         context.drawImage(img,
           {{ glyph_coords|index:0|index:1 }},
-          {{ glyph_coords|index:0|index:0 }});
+          {{ glyph_coords|index:0|index:0 }},
+          {{ glyph_coords|index:0|index:3 }},
+          {{ glyph_coords|index:0|index:2 }},
+          10, 10
+        );
       };
       img.src = '{{ image }}';
     };
