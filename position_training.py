@@ -36,7 +36,7 @@ class PositionTraining(RodanTask):
     def get_my_interface(self, inputs, settings):
 
         input_img_path = inputs['Original Image'][0]['resource_path']
-        input_xml_path = inputs['Gamera XML File'][0]['resource_path']
+        input_xml_path = inputs['GameraXML File'][0]['resource_path']
 
         glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
