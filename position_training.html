@@ -11,11 +11,12 @@
   <h1>{{ title }}</h1>
   <!-- <img src="{{ image }}"/> -->
   <canvas id="view"></canvas>
-  <ul>
-    {% for label in labels %}
-    <li>{{ label }}</li>
-    {% endfor %}
-  </ul>
+  <br>
+  {% for label in labels %}
+  <button style="display:none;" class="pos-button" id="b-{{ label }}" type="button">
+    {{ label }}
+  </button>
+  {% endfor %}
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"
           integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
           crossorigin="anonymous"></script>
