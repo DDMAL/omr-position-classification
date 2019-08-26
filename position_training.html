@@ -68,7 +68,9 @@
               data: JSON.stringify({'user_input': positions}),
               contentType: 'application/json'
           });
-          close();
+          setTimeout(function(){
+              close();
+          }, 5);
         }
 
       };
