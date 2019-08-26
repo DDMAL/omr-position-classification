@@ -64,7 +64,7 @@ class PositionTraining(RodanTask):
         output_position_path = outputs['Text output'][0]['resource_path']
 
         with open(output_position_path, "w") as outfile:
-            outfile.write(settings['@user_input'])
+            outfile.write(str(settings['@user_input']))
         return True
 
     def validate_my_user_input(self, inputs, settings, user_input):
