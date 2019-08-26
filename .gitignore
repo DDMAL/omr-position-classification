@@ -1,0 +1,6 @@
+__pycache__
+model_processing.pyc
+position_classification.pyc
+position_training.pyc
+training_interface.pyc
+__init__.pyc
