@@ -30,7 +30,8 @@ class PositionTraining(RodanTask):
     )
 
     output_port_types = (
-        {'name': 'Trained Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+h5']},
+        # {'name': 'Trained Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+h5']},
+        {'name': 'Text output', 'minimum': 1, 'maximum': 1, 'resource_types': ['text/plain']},
     )
 
     def get_my_interface(self, inputs, settings):
@@ -60,10 +61,15 @@ class PositionTraining(RodanTask):
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
         input_img_path = inputs['Original Image'][0]['resource_path']
 
-        image = cv.imread(input_img_path, True)
+        output_position_path = outputs['Text output'][0]['resource_path']
 
-        output_position_model_path = outputs['Trained Position Model'][0]['resource_path']
+        with open(output_position_path, "w") as outfile:
+            outfile.write(settings['@user_input'])
+        return True
 
 
 
         return True
+
+    def validate_my_user_input(self, inputs, settings, user_input):
+        return { '@done': True, '@user_input': user_input['user_input'] }
