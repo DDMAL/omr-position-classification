@@ -11,8 +11,8 @@ from rodan.jobs.base import RodanTask
 from . import training_interface
 from . import xml_update
 
-class PositionTraining(RodanTask):
-    name = 'Position Training'
+class PositionLabeler(RodanTask):
+    name = 'Position Labeler'
     author = 'Evan Savage'
     description = 'With original manuscript image and bounding box gamera xml files as inputs, individually label each neume component label to use for model training'
     enabled = True
@@ -51,7 +51,7 @@ class PositionTraining(RodanTask):
             'agh': avg_glyph_height,
         }
 
-        return ('position_training.html', data)
+        return ('position_labeler.html', data)
 
     def run_my_task(self, inputs, settings, outputs):
         if '@done' not in settings:
@@ -63,8 +63,12 @@ class PositionTraining(RodanTask):
 
         output_position_path = outputs['Text output'][0]['resource_path']
 
+        positions = settings['@user_input']
+
+
+
         with open(output_position_path, "w") as outfile:
-            outfile.write(str(settings['@user_input']))
+            outfile.write(settings['@user_input'][0])
         return True
 
     def validate_my_user_input(self, inputs, settings, user_input):
