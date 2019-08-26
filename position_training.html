@@ -28,7 +28,11 @@
       var img = new Image();
       var count = 0;
       var glyph_coords = {{ glyph_coords | safe }};
+      var num_coords = glyph_coords.length;
       var agh = {{ agh }};
+      var positions = [];
+
+      num_coords = 5;
 
       window.onload = function () {
         img.onload = function () {
@@ -48,6 +52,7 @@
 
       function show_glyph() {
         if (count < glyph_coords.length) {
+        if (count < num_coords) {
           context.drawImage(img,
             glyph_coords[count][1],
             glyph_coords[count][0] - 3 * agh,
@@ -57,6 +62,12 @@
           );
           count = count + 1;
         } else {
+          $.ajax({
+              url: '',
+              type: 'POST',
+              data: JSON.stringify({'user_input': positions}),
+              contentType: 'application/json'
+          });
           close();
         }
 
