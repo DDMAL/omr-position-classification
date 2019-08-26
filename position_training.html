@@ -44,14 +44,14 @@
         img.src = '{{ image }}';
       };
 
-      $('button').click(
+      $('.pos-button').click(
         function () {
-          console.log(this.id.slice(2));
+          positions.push(this.id.slice(2));
+          console.log(positions);
           show_glyph();
         });
 
       function show_glyph() {
-        if (count < glyph_coords.length) {
         if (count < num_coords) {
           context.drawImage(img,
             glyph_coords[count][1],
