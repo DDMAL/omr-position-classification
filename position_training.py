@@ -67,9 +67,5 @@ class PositionTraining(RodanTask):
             outfile.write(settings['@user_input'])
         return True
 
-
-
-        return True
-
     def validate_my_user_input(self, inputs, settings, user_input):
         return { '@done': True, '@user_input': user_input['user_input'] }
