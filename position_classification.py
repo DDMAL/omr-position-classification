@@ -32,7 +32,7 @@ class PositionClassification(RodanTask):
     )
 
     output_port_types = (
-        {'name': 'Generic XML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/xml']},
+        {'name': 'Extended GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/xml']},
     )
 
     def run_my_task(self, inputs, settings, outputs):
@@ -48,7 +48,7 @@ class PositionClassification(RodanTask):
 
         image = cv.imread(input_img_path, True)
 
-        output_xml_path = outputs['Generic XML File'][0]['resource_path']
+        output_xml_path = outputs['Extended GameraXML File'][0]['resource_path']
 
         glyph_coords, avg_glyph_height = xml_update.get_glyph_coords(input_xml_path)
 
