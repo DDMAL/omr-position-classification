@@ -52,3 +52,27 @@ def write_classification_xml(input_xml_path, output_xml_path, positions, types):
         out_file.close()
 
     return True
+
+def write_label_xml(input_xml_path, output_xml_path, url, positions, types):
+    with open(input_xml_path, 'r') as in_file:
+        buf = in_file.readlines()
+
+    inc = 0
+
+    with open(output_xml_path, 'w') as out_file:
+        for line in buf:
+            if "</ids>" in line:
+                position = positions[inc]
+                line = line + \
+                    '      <type name=""/>\n' + \
+                    '      <pitch-estimation>\n' + \
+                    '        <position name="' + position + \
+                    '" confidence="1.00"/>\n' + \
+                    '        <pitch name=""/>\n' + \
+                    '      </pitch-estimation>\n'
+                inc += 1
+            out_file.write(line)
+        out_file.write(url)
+        out_file.close()
+
+    return True
