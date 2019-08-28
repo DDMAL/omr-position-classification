@@ -14,8 +14,11 @@
   description: Trained network from Keras framework
   extension: hdf5
 - mimetype: application/gamera+xml
-  description: Gamera XML file
+  description: GameraXML file
   extension: xml
 - mimetype: application/xml
-  description: Generic XML file
+  description: Extended GameraXML file
   extension: xml
+- mimetype: tensorflow/frozen+inference+graph+pb
+  description: Trained Tensorflow Object Detection model
+  extension: pb
