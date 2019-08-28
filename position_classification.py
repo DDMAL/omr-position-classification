@@ -61,6 +61,6 @@ class PositionClassification(RodanTask):
             input_position_model_path,
             input_type_model_path)
 
-        xml_update.write_output_xml(input_xml_path, output_xml_path, pos_predictions, type_predictions)
+        xml_update.write_classification_xml(input_xml_path, output_xml_path, pos_predictions, type_predictions)
 
         return True

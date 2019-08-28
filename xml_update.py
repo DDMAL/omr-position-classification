@@ -25,7 +25,7 @@ def get_glyph_coords(xml_path):
     return glyph_coords, avg_glyph_height
 
 
-def write_output_xml(input_xml_path, output_xml_path, pos_predictions, type_predictions):
+def write_classification_xml(input_xml_path, output_xml_path, positions, types):
 
     labels = ['l1', 'l2', 'l3', 'l4', 's1', 's2', 's3', 's4', 's5']
 
@@ -38,8 +38,8 @@ def write_output_xml(input_xml_path, output_xml_path, pos_predictions, type_pred
     with open(output_xml_path, 'w') as out_file:
         for line in buf:
             if "</ids>" in line:
-                position = str(labels[np.argmax(pos_predictions[inc])])
-                conf_pos = str(round(max(pos_predictions[inc]) * 100, 2))
+                position = str(labels[np.argmax(positions[inc])])
+                conf_pos = str(round(max(positions[inc]) * 100, 2))
                 line = line + \
                     '\t\t\t<type name=""/>\n' + \
                     '\t\t\t<pitch-estimation>\n' + \
