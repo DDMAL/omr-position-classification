@@ -27,8 +27,9 @@ class PositionClassification(RodanTask):
     input_port_types = (
         {'name': 'Original Image', 'minimum': 1, 'maximum': 1, 'resource_types': lambda mime: mime.startswith('image/')},
         {'name': 'GameraXML File', 'minimum': 1, 'maximum': 1, 'resource_types': ['application/gamera+xml']},
-        {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+h5']},
-        {'name': 'Type Model', 'minimum': 0, 'maximum': 1, 'resource_types': ['keras/model+h5']}
+        {'name': 'Position Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
+        {'name': 'Staff Detection Model', 'minimum': 1, 'maximum': 1, 'resource_types': ['tensorflow/frozen+inference+graph+pb']},
+        {'name': 'Type Model', 'minimum': 0, 'maximum': 1, 'resource_types': ['keras/model+hdf5']},
     )
 
     output_port_types = (
@@ -38,6 +39,7 @@ class PositionClassification(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         input_position_model_path = inputs['Position Model'][0]['resource_path']
+        input_staff_detect_path = inputs['Staff Detection Model'][0]['resource_path']
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
         input_img_path = inputs['Original Image'][0]['resource_path']
 
