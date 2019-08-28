@@ -4,27 +4,53 @@
     <title>Position Training</title>
     <meta charset="UTF-8">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="css/classifier.min.css"> -->
+    <link rel="stylesheet" href="css/position_labeler.css">
     <meta name="viewport" content="width=device-width"/>
 </head>
 <body>
-  <h1>{{ title }}</h1>
-  <!-- <img src="{{ image }}"/> -->
-  <canvas id="view"></canvas>
-  <br>
-  {% for label in labels %}
-  <button style="display:none;" class="pos-button" id="b-{{ label }}" type="button">
-    {{ label }}
-  </button>
-  {% endfor %}
+  <div class="container">
+    <h1 >{{ title }}</h1><button id="save-button">Save</button>
+    <hr>
+    <h2 id="current-header">Current Neume</h2>
+    <div class="interface-wrapper">
+      <div class="interface">
+        <canvas style="display:none;" id="view"></canvas>
+        <br><br>
+        <div class="even-container">
+          {% for label in labels %}
+            {% if forloop.counter|divisibleby:2 %}
+              <button style="display:none;width:70px;height:30px;background-color:#ea766e;" class="pos-button" id="b-{{ label }}" type="button">
+                {{ label }}
+              </button>
+            {% else %}
+              <button style="display:none;width:50px;height:30px;background-color:#e6eaf0;" class="pos-button" id="b-{{ label }}" type="button">
+                {{ label }}
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="previous-container">
+        <h3>Previous Neume</h3>
+        <canvas style="display:none;" id="previous-view"></canvas>
+        <p style="display:none;" id="previous-pos"></p>
+      </div>
+    </div>
+    <br>
+    <br>
+  </div>
+  <button id="undo-button">Undo</button>
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"
           integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
           crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
       var buttons = document.getElementsByClassName('pos-button')
-      var canvas = document.getElementById("view");
-      var context = canvas.getContext("2d");
+      var cur_canvas = document.getElementById("view");
+      var cur_context = cur_canvas.getContext("2d");
+      var pre_canvas = document.getElementById("previous-view");
+      var pre_context = pre_canvas.getContext("2d");
+      var pre_pos = document.getElementById("previous-pos")
       var img = new Image();
       var count = 0;
       var glyph_coords = {{ glyph_coords | safe }};
@@ -32,14 +58,13 @@
       var agh = {{ agh }};
       var positions = [];
 
-      num_coords = 5;
-
       window.onload = function () {
         img.onload = function () {
           show_glyph();
           for (var i=0;i < buttons.length; i++) {
             buttons[i].style.display = "inline-block";
           }
+          cur_canvas.style.display = "inline-block";
         };
         img.src = '{{ image }}';
       };
@@ -47,25 +72,53 @@
       $('.pos-button').click(
         function () {
           positions.push(this.id.slice(2));
-          console.log(positions);
           show_glyph();
+          show_previous_glyph();
+        });
+
+      $('#undo-button').click(
+        function() {
+          positions.pop();
+          count = positions.length;
+          show_glyph();
+          show_previous_glyph();
+          // setTimeout(show_glyph(), 50);
+        });
+
+      $('#save-button').click(
+        function () {
+          $.ajax({
+              url: '',
+              type: 'POST',
+              data: JSON.stringify({
+                'user_input': positions,
+                'save': true,
+              }),
+              contentType: 'application/json'
+          });
+          setTimeout(function(){
+              close();
+          }, 5);
         });
 
       function show_glyph() {
         if (count < num_coords) {
-          context.drawImage(img,
+          cur_context.drawImage(img,
             glyph_coords[count][1],
             glyph_coords[count][0] - 3 * agh,
             glyph_coords[count][3],
             glyph_coords[count][2] + 6 * agh,
-            135, 10, 30, 150
+            0, 0, 300, 150
           );
-          count = count + 1;
+          count++;
         } else {
           $.ajax({
               url: '',
               type: 'POST',
-              data: JSON.stringify({'user_input': positions}),
+              data: JSON.stringify({
+                'user_input': positions,
+                'complete': true,
+              }),
               contentType: 'application/json'
           });
           setTimeout(function(){
@@ -74,6 +127,30 @@
         }
 
       };
+      function show_previous_glyph() {
+        var temp = positions.length - 1
+        $('#previous-pos').text(positions[temp])
+        if (temp >= 0) {
+          pre_context.drawImage(img,
+            glyph_coords[temp][1],
+            glyph_coords[temp][0] - 3 * agh,
+            glyph_coords[temp][3],
+            glyph_coords[temp][2] + 6 * agh,
+            0, 0, 300, 150
+          );
+          pre_canvas.style.display = "block";
+          pre_pos.style.display = "block";
+        }
+        else {
+          pre_context.clearRect(
+            0,0,pre_canvas.width,pre_canvas.height
+          );
+          pre_canvas.style.display = "none";
+          pre_pos.style.display = "none";
+          $('#previous-pos').text('')
+        }
+      };
+
     });
   </script>
 </body>
