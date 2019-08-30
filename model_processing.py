@@ -104,3 +104,41 @@ def get_staff_bounding_boxes(staff_image_path, inference_graph_path):
     staff_bb_filter, x_start, x_end = filter_staff_bb(staff_bb)
 
     return staff_bb_filter
+
+
+def filter_staff_bb(staff_bb):
+
+    staff_bb = np.array(staff_bb)
+    staff_bb = staff_bb[np.argsort(staff_bb[:,1])]
+    staff_bb_filter = []
+    x_start = 10**20
+    x_end = 0
+    index = 0
+    # Loop for numbering stave fractions into the same vertical orientation
+    for staff in staff_bb:
+        if staff[2] < x_start:
+            x_start = staff[2]
+        if staff[4] > x_end:
+            x_end = staff[4]
+        if staff[0] == 0:
+            staff[0] = index + 1
+            for staff_next in staff_bb[index+1:]:
+                if staff[1] <= staff_next[1] <= staff[3]:
+                    staff_next[0] = index + 1
+            index += 1
+    print(staff_bb)
+    index = 1
+    for staff in staff_bb:
+        if staff[0] == index:
+            staff_bb_filter.append(staff[1:])
+            for staff_next in staff_bb[index:]:
+                if staff_next[0] == index:
+                    staff_bb_filter[index-1][2] = staff_next[3]
+                    if staff_next[2] < staff[2]:
+                        staff_bb_filter[index-1][1] = staff_next[2]
+                    if staff_next[4] > staff[4]:
+                        staff_bb_filter[index-1][3] = staff_next[4]
+            index += 1
+    print(staff_bb_filter)
+
+    return staff_bb_filter, x_start, x_end
