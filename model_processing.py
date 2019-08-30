@@ -34,9 +34,10 @@ def process_neumes(image, coords, avg_neume_height, position_model_path, type_mo
     bounding_boxes = np.asarray(bounding_boxes).reshape(len(bounding_boxes),120,30,3)
 
     position_model = load_model(position_model_path)
-    pos_predictions = position_model.predict(bounding_boxes)
+    predictions = position_model.predict(bounding_boxes)
 
-    type_predictions = []
+    pos_predictions = predictions[1]
+    type_predictions = predictions[0]
 
     if type_model_path != '':
         type_model = load_model(type_model_path)
