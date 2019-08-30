@@ -10,6 +10,7 @@ import os
 
 
 from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.sessions.models import Session
 from rodan.jobs.base import RodanTask
 from . import label_interface
 from . import xml_update

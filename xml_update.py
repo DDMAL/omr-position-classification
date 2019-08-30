@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 import numpy as np
+import uuid
+import lxml.etree as etree
 
 
 def get_glyph_coords(xml_path):
