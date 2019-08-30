@@ -52,11 +52,11 @@
       var pre_context = pre_canvas.getContext("2d");
       var pre_pos = document.getElementById("previous-pos")
       var img = new Image();
-      var count = 0;
+      var count = {{ count }};
       var glyph_coords = {{ glyph_coords | safe }};
       var num_coords = glyph_coords.length;
       var agh = {{ agh }};
-      var positions = [];
+      var positions = {{ positions | safe }};
 
       window.onload = function () {
         img.onload = function () {

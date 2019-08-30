@@ -8,9 +8,6 @@ import cv2 as cv
 import fileinput
 import os
 
-
-from django.contrib.sessions.backends.db import SessionStore
-from django.contrib.sessions.models import Session
 from rodan.jobs.base import RodanTask
 from . import label_interface
 from . import xml_update
@@ -56,12 +53,23 @@ class PositionTraining(RodanTask):
 
         interface_labels = ['s1','l1','s2','l2','s3','l3','s4','l4','s5']
 
+        count = 0
+        positions = []
+
+        if '@classify' in settings or '@save' in settings:
+            positions = settings['@user_input'][0]
+            positions = [p.encode('ascii') for p in positions]
+            count = int(settings['@user_input'][1])
+            print(positions)
+
         data = {
             'title': 'Position Labeler',
             'image': label_interface.media_file_path_to_public_url(input_img_path),
             'labels': interface_labels,
             'glyph_coords': glyph_coords,
             'agh': avg_glyph_height,
+            'count': count,
+            'positions': positions,
         }
 
         return ('position_labeler.html', data)
@@ -69,6 +77,7 @@ class PositionTraining(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
         if '@done' not in settings:
             return self.WAITING_FOR_INPUT()
+
 
         # input_position_model_path = inputs['Position Model'][0]['resource_path']
         input_xml_path = inputs['GameraXML File'][0]['resource_path']
@@ -100,6 +109,8 @@ class PositionTraining(RodanTask):
 
     def validate_my_user_input(self, inputs, settings, user_input):
         if 'save' in user_input:
-            return {'@user_input': user_input['user_input']}
+            return {'@save': True, '@user_input': user_input['user_input']}
+        elif 'classify' in user_input:
+            return {'@classify': True, '@user_input': user_input['user_input']}
         elif 'complete' in user_input:
             return { '@done': True, '@user_input': user_input['user_input'] }
