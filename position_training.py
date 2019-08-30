@@ -103,7 +103,7 @@ class PositionTraining(RodanTask):
             output_model_path + '.hdf5')
 
         os.rename(output_model_path + '.hdf5', output_model_path)
-        xml_update.write_label_xml(input_xml_path, output_xml_path, input_xml_url, positions, types)
+        xml_update.write_label_xml(input_xml_path, output_xml_path, positions, types)
 
         return True
 

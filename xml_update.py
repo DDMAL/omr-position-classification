@@ -113,43 +113,29 @@ def write_classification_xml(input_xml_path, output_xml_path, positions, types,
         print(round(bb[0] * height), round(bb[2] * height))
 
     with open(output_xml_path, 'w') as out_file:
-        for line in buf:
-            if "</ids>" in line:
-                position = str(labels[np.argmax(positions[inc])])
-                conf_pos = str(round(max(positions[inc]) * 100, 2))
-                line = line + \
-                    '\t\t\t<type name=""/>\n' + \
-                    '\t\t\t<pitch-estimation>\n' + \
-                    '\t\t\t\t<position name="' + position + \
-                    '" confidence="' + conf_pos + '"/>\n' + \
-                    '\t\t\t\t<pitch name=""/>\n' + \
-                    '\t\t\t</pitch-estimation>\n'
-                inc += 1
-            out_file.write(line)
-        out_file.close()
+        out_file.write(etree.tostring(tree, pretty_print=True, encoding='unicode'))
 
     return True
 
-def write_label_xml(input_xml_path, output_xml_path, url, positions, types):
-    with open(input_xml_path, 'r') as in_file:
-        buf = in_file.readlines()
 
-    inc = 0
+def write_label_xml(input_xml_path, output_xml_path, url, positions, types):
+
+    parser = etree.XMLParser(remove_blank_text=True)
+    tree = etree.parse(input_xml_path, parser)
+    root = tree.getroot()
+
+    for glyph in root.find('glyphs'):
+        position = positions[inc]
+        type = etree.SubElement(glyph, 'type')
+        type.attrib['name'] = ''
+        pe_el = etree.SubElement(glyph, 'pitch-estimation')
+        pos_el = etree.SubElement(pe_el, 'position')
+        pitch_el = etree.SubElement(pe_el, 'pitch')
+        pos_el.attrib['name'] = position
+        pos_el.attrib['confidence'] = 1.00
+        pitch_el.attrib['name'] = ''
 
     with open(output_xml_path, 'w') as out_file:
-        for line in buf:
-            if "</ids>" in line:
-                position = positions[inc]
-                line = line + \
-                    '      <type name=""/>\n' + \
-                    '      <pitch-estimation>\n' + \
-                    '        <position name="' + position + \
-                    '" confidence="1.00"/>\n' + \
-                    '        <pitch name=""/>\n' + \
-                    '      </pitch-estimation>\n'
-                inc += 1
-            out_file.write(line)
-        out_file.write(url)
-        out_file.close()
+        out_file.write(etree.tostring(tree, pretty_print=True, encoding='unicode'))
 
     return True
